@@ -42,8 +42,8 @@ import api from './api';
     // Add routing
     app.use(api);
 
-    const server = app.listen(APP_PORT, () => {
-      console.log(`Listening on port ${server.address().port}`);
+    app.listen(APP_PORT, () => {
+      console.log(`Listening on port ${APP_PORT}`);
     });
   } catch (err) {
     console.log('Problems initializing the app', err);
