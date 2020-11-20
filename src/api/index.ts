@@ -5,8 +5,8 @@ const { Router } = express;
 const apiRouter = Router();
 
 // 404 supports
-apiRouter.use((req, res) => {
-  res.status(404).json({
+apiRouter.use((req, res): object => {
+  return res.status(404).json({
     message: 'Not found',
     status: 404,
   });
