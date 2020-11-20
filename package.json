@@ -1,13 +1,15 @@
 {
-  "name": "mangusta-w-zoo",
+  "name": "queue_system",
   "version": "1.0.0",
-  "description": "Mangusta w ZOO",
-  "main": "src/app.js",
+  "description": "Queue system",
+  "main": "build/app.js",
   "scripts": {
+    "build": "tsc",
     "client": "webpack --config=webpack.config.js --watch",
     "lint": "eslint \"src/**/*.js\"",
     "lint:fix": "npm run lint -- --fix",
-    "start": "cd src && nodemon --experimental-modules --es-module-specifier-resolution=node --no-warnings app.js",
+    "start": "nodemon --exec ts-node \"src/app.ts\"",
+    "start-org": "cd src && nodemon --experimental-modules --es-module-specifier-resolution=node --no-warnings app.js",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [
@@ -21,14 +23,16 @@
   ],
   "author": "Coderslab",
   "license": "UNLICENSED",
-  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "@types/cors": "^2.8.8",
     "@types/express": "^4.17.6",
+    "@types/express-handlebars": "^3.1.0",
     "@types/handlebars": "^4.1.0",
     "@types/jest": "^25.2.1",
     "@types/mongoose": "^5.7.14",
+    "@types/morgan": "^1.9.2",
     "babel": "^6.23.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
@@ -41,6 +45,8 @@
     "jest": "^25.3.0",
     "nodemon": "^2.0.3",
     "prettier": "^2.0.4",
+    "ts-node": "^9.0.0",
+    "tsc": "^1.20150623.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
@@ -55,7 +61,8 @@
     "handlebars": "^4.7.6",
     "mongodb": "^3.5.6",
     "mongoose": "^5.9.11",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "typescript": "^4.0.5"
   },
   "jest": {
     "preset": "",

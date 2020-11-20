@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import exhbs from 'express-handlebars';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -42,9 +43,22 @@ import api from './api';
     // Add routing
     app.use(api);
 
-    const server = app.listen(APP_PORT, () => {
-      console.log(`Listening on port ${server.address().port}`);
+    app.listen(APP_PORT, () => {
+      console.log(`Listening on port ${APP_PORT}`);
     });
+
+    // Server termination
+    process
+      .on('SIGINT', async (err) => {
+        await mongoose.disconnect();
+       if (err) console.log('Sigint: ', err);
+        process.exit(0);
+      })
+      .on('uncaughtException', async (err) => {
+        await mongoose.disconnect();
+        console.log('Uncaught exception: ', err);
+        process.exit(1);
+      });
   } catch (err) {
     console.log('Problems initializing the app', err);
   }
