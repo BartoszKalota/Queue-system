@@ -51,7 +51,7 @@ import api from './api';
     process
       .on('SIGINT', async (err) => {
         await mongoose.disconnect();
-       if (err) console.log('Sigint: ', err);
+        if (err) console.log('Sigint: ', err);
         process.exit(0);
       })
       .on('uncaughtException', async (err) => {
