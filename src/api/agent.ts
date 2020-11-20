@@ -1,13 +1,13 @@
 import express from 'express';
 
 const { Router } = express;
-const adminRouter = Router();
+const agentRouter = Router();
 
-// Queue
-adminRouter.put('/queue', (req, res): object => {
+// View
+agentRouter.get('/', (req, res): object => {
   try {
     return res.json({
-      id: '123123123123123123123123'
+      message: 'This will show agents view'
     });
   } catch (err) {
     return res.status(500).json({
@@ -16,32 +16,8 @@ adminRouter.put('/queue', (req, res): object => {
   }
 });
 
-adminRouter.delete('/queue', (req, res): object => {
-  try {
-    return res.json({
-      ok: 'ok'
-    });
-  } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
-  }
-});
-
-// Agent
-adminRouter.put('/agent', (req, res): object => {
-  try {
-    return res.json({
-      id: '123123123123123123123123'
-    });
-  } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
-  }
-});
-
-adminRouter.delete('/agent', (req, res): object => {
+// Logging
+agentRouter.post('/login', (req, res): object => {
   try {
     return res.json({
       ok: 'ok'
@@ -53,8 +29,7 @@ adminRouter.delete('/agent', (req, res): object => {
   }
 });
 
-// Assign/Unassign agent to queue
-adminRouter.post('/assignQueue', (req, res): object => {
+agentRouter.post('/logout', (req, res): object => {
   try {
     return res.json({
       ok: 'ok'
@@ -66,7 +41,20 @@ adminRouter.post('/assignQueue', (req, res): object => {
   }
 });
 
-adminRouter.post('/unassignQueue', (req, res): object => {
+// Client-Queue management
+agentRouter.post('/addClientToQueue', (req, res): object => {
+  try {
+    return res.json({
+      id: '567567567567567567567567'
+    });
+  } catch (err) {
+    return res.status(500).json({
+      err: err.message
+    });
+  }
+});
+
+agentRouter.post('/removeClientFromQueue', (req, res): object => {
   try {
     return res.json({
       ok: 'ok'
@@ -78,4 +66,4 @@ adminRouter.post('/unassignQueue', (req, res): object => {
   }
 });
 
-export default adminRouter;
+export default agentRouter;

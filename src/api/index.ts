@@ -1,11 +1,13 @@
 import express from 'express';
 
-import adminRouter from '../api/admin.js';
+import adminRouter from './admin';
+import agentRouter from './agent';
 
 const { Router } = express;
 const apiRouter = Router();
 
 apiRouter.use('/admin', adminRouter);
+apiRouter.use('/agent', agentRouter);
 
 // 404 supports
 apiRouter.use((req, res): object => {
