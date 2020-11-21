@@ -49,8 +49,8 @@ export const getQueues: strFunct = async (agentId) => {
     .exec();
 };
 
-export const addQueue: objFunct = async (queueData) => {
-  const result = new Queue(queueData);
+export const addQueue: strFunct = async (queueName) => {
+  const result = new Queue(queueName);
   await result.save();
   return result._id;
 };

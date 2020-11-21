@@ -1,13 +1,18 @@
 import express from 'express';
 
+import Admin from '../services/admin';
+
 const { Router } = express;
 const adminRouter = Router();
 
+const admin = new Admin();
+
 // Queue
-adminRouter.put('/queue', (req, res): object => {
+adminRouter.put('/queue', async (req, res): Promise<any> => {
   try {
+    const id = await admin.addQueue(req.body);
     return res.json({
-      id: '123123123123123123123123'
+      id
     });
   } catch (err) {
     return res.status(500).json({
