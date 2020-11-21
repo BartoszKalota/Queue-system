@@ -107,3 +107,15 @@ export const addToQueue: strTwoArgFunct = async (queueId, userId) => {
     members: [...queue.members, newId]
   }
 };
+
+export const removeFromQueue: strTwoArgFunct = async (queueId, userId) => {
+  return await Queue
+    .updateOne({
+      _id: queueId
+    }, {
+      '$pull': {
+        members: userId
+      }
+    })
+    .exec();
+};
