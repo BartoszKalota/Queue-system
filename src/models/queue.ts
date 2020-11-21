@@ -53,3 +53,13 @@ export const addQueue: objFunct = async (queueData) => {
   await result.save();
   return result._id;
 };
+
+export const removeQueue: strFunct = async (queueId) => {
+  const result = await Queue
+    .deleteOne({
+      _id: queueId
+    })
+    .exec();
+  
+  return result.deletedCount;
+};
