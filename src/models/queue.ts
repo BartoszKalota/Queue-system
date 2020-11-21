@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { objFunct, strFunct, strTwoArgFunct } from '../../types/functions';
 import { quequeQuery } from '../../types/queries';
@@ -86,4 +87,23 @@ export const unassignFromQueue: strTwoArgFunct = async (queueId, agentId) => {
       }
     })
     .exec();
+};
+
+export const addToQueue: strTwoArgFunct = async (queueId, userId) => {
+  const newId = userId || new ObjectId();
+
+  const queue: any = await Queue
+    .findOneAndUpdate({
+      _id: queueId
+    }, {
+      '$addToSet': {
+        members: newId
+      }
+    })
+    .exec();
+
+  return {
+    ...queue.toObject(),
+    members: [...queue.members, newId]
+  }
 };
