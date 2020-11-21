@@ -1,4 +1,4 @@
-type agentModelFunction<T> = (arg: T) => Promise<any>;
+type modelFunction<T> = (arg: T) => Promise<any>;
 
-export type objFunct = agentModelFunction<object>;
-export type strFunct = agentModelFunction<string>;
+export type objFunct = modelFunction<object>;
+export type strFunct = modelFunction<string>;

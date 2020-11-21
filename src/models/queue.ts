@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import { strFunct } from '../../types/functions';
+
 import { Agent } from './agent';
 
 export const queueSchema = new mongoose.Schema({
@@ -20,3 +22,12 @@ export const queueSchema = new mongoose.Schema({
 });
 
 export const Queue = mongoose.model('Queue', queueSchema, 'queues');
+
+export const getQueue: strFunct = async (queueId) => {
+  return await Queue
+    .findOne({
+      _id: queueId
+    })
+    .lean()
+    .exec();
+};
