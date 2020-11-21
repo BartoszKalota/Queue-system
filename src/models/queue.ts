@@ -75,3 +75,15 @@ export const assignToQueue: strTwoArgFunct = async (queueId, agentId) => {
     })
     .exec();
 };
+
+export const unassignFromQueue: strTwoArgFunct = async (queueId, agentId) => {
+  return await Queue
+    .updateOne({
+      _id: queueId
+    }, {
+      '$pull': {
+        agents: agentId
+      }
+    })
+    .exec();
+};
