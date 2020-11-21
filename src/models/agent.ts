@@ -29,9 +29,9 @@ export const getAgent: strFunct = async (agentId) => {
 };
 
 export const addAgent: objFunct = async (agentData) => {
-  const agent = new Agent(agentData);
-  await agent.save();
-  return agent._id;
+  const result = new Agent(agentData);
+  await result.save();
+  return result._id;
 };
 
 export const removeAgent: strFunct = async (agentId) => {
