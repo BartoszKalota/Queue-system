@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-import { objFunct, strFunct } from '../../types/functions';
-
 export const agentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,7 +17,7 @@ export const agentSchema = new mongoose.Schema({
 
 export const Agent = mongoose.model('Agent', agentSchema, 'agents');
 
-export const getAgent: strFunct = async (agentId) => {
+export const getAgent = async (agentId: string): Promise<any> => {
   return await Agent
     .findOne({
       _id: agentId
@@ -28,13 +26,13 @@ export const getAgent: strFunct = async (agentId) => {
     .exec();
 };
 
-export const addAgent: objFunct = async (agentData) => {
+export const addAgent = async (agentData: object): Promise<any> => {
   const result = new Agent(agentData);
   await result.save();
   return result._id;
 };
 
-export const removeAgent: strFunct = async (agentId) => {
+export const removeAgent = async (agentId: string): Promise<any> => {
   const result = await Agent
     .deleteOne({
       _id: agentId

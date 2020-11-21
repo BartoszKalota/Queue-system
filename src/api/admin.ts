@@ -8,7 +8,7 @@ const adminRouter = Router();
 const admin = new Admin();
 
 // Queue
-adminRouter.put('/queue', async (req, res): Promise<any> => {
+adminRouter.put('/queue', async (req, res): Promise<object> => {
   try {
     const id = await admin.addQueue(req.body);
     return res.json({
