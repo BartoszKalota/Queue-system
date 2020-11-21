@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { strFunct } from '../../types/functions';
+import { objFunct, strFunct } from '../../types/functions';
 import { quequeQuery } from '../../types/queries';
 
 import { Agent } from './agent';
@@ -46,4 +46,10 @@ export const getQueues: strFunct = async (agentId) => {
     .findOne(query)
     .lean()
     .exec();
+};
+
+export const addQueue: objFunct = async (queueData) => {
+  const result = new Queue(queueData);
+  await result.save();
+  return result._id;
 };
