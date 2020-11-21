@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import { strFunct } from '../../types/functions';
+import { quequeQuery } from '../../types/queries';
 
 import { Agent } from './agent';
 
@@ -28,6 +29,21 @@ export const getQueue: strFunct = async (queueId) => {
     .findOne({
       _id: queueId
     })
+    .lean()
+    .exec();
+};
+
+export const getQueues: strFunct = async (agentId) => {
+  const query: quequeQuery = {};
+
+  if (agentId) {
+    query.agents = {
+      '$in': [agentId]
+    }
+  }
+
+  return await Queue
+    .findOne(query)
     .lean()
     .exec();
 };
