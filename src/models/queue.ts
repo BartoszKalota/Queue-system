@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { objFunct, strFunct } from '../../types/functions';
+import { objFunct, strFunct, strTwoArgFunct } from '../../types/functions';
 import { quequeQuery } from '../../types/queries';
 
 import { Agent } from './agent';
@@ -62,4 +62,16 @@ export const removeQueue: strFunct = async (queueId) => {
     .exec();
   
   return result.deletedCount;
+};
+
+export const assignToQueue: strTwoArgFunct = async (queueId, agentId) => {
+  return await Queue
+    .updateOne({
+      _id: queueId
+    }, {
+      '$addToSet': {
+        agents: agentId
+      }
+    })
+    .exec();
 };
