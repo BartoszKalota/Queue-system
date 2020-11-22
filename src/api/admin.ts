@@ -2,22 +2,26 @@ import express from 'express';
 
 import Admin from '../services/admin';
 
+import { MISSING_DATA } from '../constants/error';
+import errorResponse from '../utils/errorResponse';
+
 const { Router } = express;
 const adminRouter = Router();
 
 const admin = new Admin();
 
 // Queue
-adminRouter.put('/queue', async (req, res): Promise<object> => {
+adminRouter.put('/queue', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+    
     const id = await admin.addQueue(req.body);
+    console.log(`Queue named '${req.body.name}' created!`);
     return res.json({
       id
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
