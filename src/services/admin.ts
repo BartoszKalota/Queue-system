@@ -9,18 +9,17 @@ import {
 } from '../models/agent';
 
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
+import errorValidationService from '../utils/errorValidationService';
 
 import { ErrorExt } from '../../types/errorExt';
 
 export default class Admin {
   // Queue
-  async addQueue(queueName: string): Promise<string> {
+  async addQueue(queueName: string): Promise<string | void> {
     try {
       return await dbAddQueue(queueName);
     } catch (err) {
-      const error: ErrorExt = new Error(VALIDATION_ERROR);
-      error.reason = err.message;
-      throw error;
+      errorValidationService(err, VALIDATION_ERROR);
     }
   }
 
@@ -38,13 +37,11 @@ export default class Admin {
   }
 
   // Agent
-  async addAgent(agentData: object): Promise<string> {
+  async addAgent(agentData: object): Promise<string | void> {
     try {
       return await dbAddAgent(agentData);
     } catch (err) {
-      const error: ErrorExt = new Error(VALIDATION_ERROR);
-      error.reason = err.message;
-      throw error;
+      errorValidationService(err, VALIDATION_ERROR);
     }
   }
 }
