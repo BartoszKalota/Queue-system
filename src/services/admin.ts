@@ -5,7 +5,8 @@ import {
   removeQueue as dbRemoveQueue
 } from '../models/queue';
 import {
-  addAgent as dbAddAgent
+  addAgent as dbAddAgent,
+  removeAgent as dbRemoveAgent
 } from '../models/agent';
 
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
@@ -43,5 +44,18 @@ export default class Admin {
     } catch (err) {
       errorValidationService(err, VALIDATION_ERROR);
     }
+  }
+
+  async removeAgent(agentId: string): Promise<boolean> {
+    const isValidObjectId = mongoose.Types.ObjectId.isValid(agentId);
+    if (!isValidObjectId) {
+      const error: ErrorExt = new Error(VALIDATION_ERROR);
+      error.reason = `Given ID is not valid: ${agentId}`;
+      throw error;
+    }
+
+    const result = await dbRemoveAgent(agentId);
+    if (result === 0) throw new Error(NOT_FOUND);
+    return true;
   }
 }

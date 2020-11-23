@@ -32,7 +32,7 @@ export const addAgent = async (agentData: object): Promise<string> => {
   return result._id;
 };
 
-export const removeAgent = async (agentId: string): Promise<any> => {
+export const removeAgent = async (agentId: string): Promise<number | undefined> => {
   const result = await Agent
     .deleteOne({
       _id: agentId

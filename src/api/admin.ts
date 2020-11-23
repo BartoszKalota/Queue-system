@@ -52,15 +52,15 @@ adminRouter.put('/agent', async (req, res): Promise<object | void> => {
   }
 });
 
-adminRouter.delete('/agent', (req, res): object => {
+adminRouter.delete('/agent', async (req, res): Promise<object | void> => {
   try {
+    await admin.removeAgent(`${req.query.id}`); // in template string to match the types for typescript
+    console.log(`Agent with ID ${req.query.id} was deleted!`);
     return res.json({
       ok: 'ok'
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
