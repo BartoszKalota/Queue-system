@@ -71,15 +71,17 @@ adminRouter.delete('/agent', async (req, res): Promise<object | void> => {
 });
 
 // Assign/Unassign agent to queue
-adminRouter.post('/assignQueue', (req, res): object => {
+adminRouter.post('/assignQueue', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+
+    await admin.assignToQueue(req.body.queueId, req.body.agentId);
+    console.log(`Agent with ID ${req.body.agentId} was assigned to the queue with ID ${req.body.queueId} successfully!`);
     return res.json({
       ok: 'ok'
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 

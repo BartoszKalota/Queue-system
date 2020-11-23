@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 import { quequeQuery } from '../../types/queries';
@@ -24,7 +24,7 @@ export const queueSchema = new mongoose.Schema({
 
 export const Queue = mongoose.model('Queue', queueSchema, 'queues');
 
-export const getQueue = async (queueId: string): Promise<any> => {
+export const getQueue = async (queueId: string): Promise<Pick<Document, "_id"> | null> => {
   return await Queue
     .findOne({
       _id: queueId
