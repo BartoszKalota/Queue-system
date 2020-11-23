@@ -26,7 +26,7 @@ export const getAgent = async (agentId: string): Promise<any> => {
     .exec();
 };
 
-export const addAgent = async (agentData: object): Promise<any> => {
+export const addAgent = async (agentData: object): Promise<string> => {
   const result = new Agent(agentData);
   await result.save();
   return result._id;

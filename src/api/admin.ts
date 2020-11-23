@@ -38,15 +38,17 @@ adminRouter.delete('/queue', async (req, res): Promise<object | void> => {
 });
 
 // Agent
-adminRouter.put('/agent', (req, res): object => {
+adminRouter.put('/agent', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+    
+    const id = await admin.addAgent(req.body);
+    console.log(`Agent named ${req.body.name} was created!`);
     return res.json({
-      id: '123123123123123123123123'
+      id
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
