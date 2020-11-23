@@ -1,7 +1,18 @@
+import mongoose from 'mongoose';
+
 import { ErrorExt } from '../../types/errorExt';
 
-export default (err: ErrorExt, VALIDATION_ERROR: string) => {
+export const errorGeneralValidation = (err: ErrorExt, VALIDATION_ERROR: string) => {
   const error: ErrorExt = new Error(VALIDATION_ERROR);
   error.reason = err.message;
   throw error;
+};
+
+export const errorIdValidation = (id: string, VALIDATION_ERROR: string) => {
+  const isValidObjectId = mongoose.Types.ObjectId.isValid(id);
+  if (!isValidObjectId) {
+    const error: ErrorExt = new Error(VALIDATION_ERROR);
+    error.reason = `Given ID is not valid: ${id}`;
+    throw error;
+  }
 };

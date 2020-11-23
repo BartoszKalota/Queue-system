@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 import {
   addQueue as dbAddQueue,
   removeQueue as dbRemoveQueue
@@ -10,9 +8,7 @@ import {
 } from '../models/agent';
 
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
-import errorValidationService from '../utils/errorValidationService';
-
-import { ErrorExt } from '../../types/errorExt';
+import { errorGeneralValidation, errorIdValidation } from '../utils/errorValidationService';
 
 export default class Admin {
   // Queue
@@ -20,17 +16,12 @@ export default class Admin {
     try {
       return await dbAddQueue(queueName);
     } catch (err) {
-      errorValidationService(err, VALIDATION_ERROR);
+      errorGeneralValidation(err, VALIDATION_ERROR);
     }
   }
 
   async removeQueue(queueId: string): Promise<boolean> {
-    const isValidObjectId = mongoose.Types.ObjectId.isValid(queueId);
-    if (!isValidObjectId) {
-      const error: ErrorExt = new Error(VALIDATION_ERROR);
-      error.reason = `Given ID is not valid: ${queueId}`;
-      throw error;
-    }
+    errorIdValidation(queueId, VALIDATION_ERROR);
 
     const result = await dbRemoveQueue(queueId);
     if (result === 0) throw new Error(NOT_FOUND);
@@ -42,17 +33,12 @@ export default class Admin {
     try {
       return await dbAddAgent(agentData);
     } catch (err) {
-      errorValidationService(err, VALIDATION_ERROR);
+      errorGeneralValidation(err, VALIDATION_ERROR);
     }
   }
 
   async removeAgent(agentId: string): Promise<boolean> {
-    const isValidObjectId = mongoose.Types.ObjectId.isValid(agentId);
-    if (!isValidObjectId) {
-      const error: ErrorExt = new Error(VALIDATION_ERROR);
-      error.reason = `Given ID is not valid: ${agentId}`;
-      throw error;
-    }
+    errorIdValidation(agentId, VALIDATION_ERROR);
 
     const result = await dbRemoveAgent(agentId);
     if (result === 0) throw new Error(NOT_FOUND);
