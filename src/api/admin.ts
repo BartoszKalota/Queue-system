@@ -27,8 +27,11 @@ adminRouter.put('/queue', async (req, res): Promise<object | void> => {
 
 adminRouter.delete('/queue', async (req, res): Promise<object | void> => {
   try {
-    await admin.removeQueue(`${req.query.id}`); // in template string to match the types for typescript
-    console.log(`Queue with ID ${req.query.id} was deleted!`);
+    const id = req.query.id;
+    if (!id) throw new Error(MISSING_DATA);
+
+    await admin.removeQueue(`${id}`); // in template string to match the types for typescript
+    console.log(`Queue with ID ${id} was deleted!`);
     return res.json({
       ok: 'ok'
     })
@@ -54,8 +57,11 @@ adminRouter.put('/agent', async (req, res): Promise<object | void> => {
 
 adminRouter.delete('/agent', async (req, res): Promise<object | void> => {
   try {
-    await admin.removeAgent(`${req.query.id}`); // in template string to match the types for typescript
-    console.log(`Agent with ID ${req.query.id} was deleted!`);
+    const id = req.query.id;
+    if (!id) throw new Error(MISSING_DATA);
+    
+    await admin.removeAgent(`${id}`); // in template string to match the types for typescript
+    console.log(`Agent with ID ${id} was deleted!`);
     return res.json({
       ok: 'ok'
     });
