@@ -16,7 +16,7 @@ adminRouter.put('/queue', async (req, res): Promise<object | void> => {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
     
     const id = await admin.addQueue(req.body);
-    console.log(`Queue named '${req.body.name}' created!`);
+    console.log(`Queue named '${req.body.name}' was created!`);
     return res.json({
       id
     });
@@ -25,15 +25,15 @@ adminRouter.put('/queue', async (req, res): Promise<object | void> => {
   }
 });
 
-adminRouter.delete('/queue', (req, res): object => {
+adminRouter.delete('/queue', async (req, res): Promise<object | void> => {
   try {
+    await admin.removeQueue(`${req.query.id}`); // in template string to match the types for typescript
+    console.log(`Queue with ID ${req.query.id} was deleted!`);
     return res.json({
       ok: 'ok'
-    });
+    })
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 

@@ -54,7 +54,7 @@ export const addQueue = async (queueName: string): Promise<string> => {
   return result._id;
 };
 
-export const removeQueue = async (queueId: string): Promise<any> => {
+export const removeQueue = async (queueId: string): Promise<number | undefined> => {
   const result = await Queue
     .deleteOne({
       _id: queueId
