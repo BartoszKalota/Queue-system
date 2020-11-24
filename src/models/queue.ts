@@ -64,7 +64,7 @@ export const removeQueue = async (queueId: string): Promise<number | undefined> 
   return result.deletedCount;
 };
 
-export const assignToQueue = async (queueId: string, agentId: string): Promise<any> => {
+export const assignToQueue = async (queueId: string, agentId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId
@@ -76,7 +76,7 @@ export const assignToQueue = async (queueId: string, agentId: string): Promise<a
     .exec();
 };
 
-export const unassignFromQueue = async (queueId: string, agentId: string): Promise<any> => {
+export const unassignFromQueue = async (queueId: string, agentId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId
