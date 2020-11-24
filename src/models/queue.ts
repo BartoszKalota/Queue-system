@@ -88,7 +88,7 @@ export const unassignFromQueue = async (queueId: string, agentId: string): Promi
     .exec();
 };
 
-export const addToQueue = async (queueId: string, userId: string): Promise<any> => {
+export const addToQueue = async (queueId: string, userId: string): Promise<object> => {
   const newId = userId || new ObjectId();
 
   const queue: any = await Queue
@@ -107,7 +107,7 @@ export const addToQueue = async (queueId: string, userId: string): Promise<any> 
   }
 };
 
-export const removeFromQueue = async (queueId: string, userId: string): Promise<any> => {
+export const removeFromQueue = async (queueId: string, userId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId

@@ -63,15 +63,17 @@ agentRouter.post('/addClientToQueue', async (req, res): Promise<object | void> =
   }
 });
 
-agentRouter.post('/removeClientFromQueue', (req, res): object => {
+agentRouter.post('/removeClientFromQueue', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+
+    await agent.removeFromQueue(req.body.queueId, req.body.userId);
+    console.log(`Client with ID ${req.body.userId} was unassigned from the queue with ID ${req.body.queueId} successfully!`);
     return res.json({
       ok: 'ok'
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 

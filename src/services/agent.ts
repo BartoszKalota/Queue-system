@@ -2,7 +2,8 @@ import { Document } from 'mongoose';
 
 import {
   getQueue as dbGetQueue,
-  addToQueue as dbAddToQueue
+  addToQueue as dbAddToQueue,
+  removeFromQueue as dbRemoveFromQueue
 } from '../models/queue';
 
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
@@ -24,6 +25,14 @@ export default class Agent {
     errorIdValidation(userId, VALIDATION_ERROR);
 
     await dbAddToQueue(queueId, userId);
+    return true;
+  }
+
+  async removeFromQueue(queueId: string, userId: string): Promise<boolean> {
+    await this.getQueue(queueId);
+    errorIdValidation(userId, VALIDATION_ERROR);
+
+    await dbRemoveFromQueue(queueId, userId);
     return true;
   }
 }
