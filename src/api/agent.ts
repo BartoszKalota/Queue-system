@@ -1,7 +1,14 @@
 import express from 'express';
 
+import Agent from '../services/agent';
+
+import { MISSING_DATA } from '../constants/error';
+import errorResponse from '../utils/errorResponse';
+
 const { Router } = express;
 const agentRouter = Router();
+
+const agent = new Agent();
 
 // View
 agentRouter.get('/', (req, res): object => {
@@ -42,15 +49,17 @@ agentRouter.post('/logout', (req, res): object => {
 });
 
 // Client-Queue management
-agentRouter.post('/addClientToQueue', (req, res): object => {
+agentRouter.post('/addClientToQueue', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+
+    await agent.addToQueue(req.body.queueId, req.body.userId);
+    console.log(`Client with ID ${req.body.userId} was assigned to the queue with ID ${req.body.queueId} successfully!`);
     return res.json({
-      id: '567567567567567567567567'
+      ok: 'ok'
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
