@@ -16,3 +16,9 @@ export const errorIdValidation = (id: string, VALIDATION_ERROR: string) => {
     throw error;
   }
 };
+
+export const errorNotFound = (item: string, NOT_FOUND: string) => {
+  const error: ErrorExt = new Error(NOT_FOUND);
+  error.reason = item;
+  throw error;
+};

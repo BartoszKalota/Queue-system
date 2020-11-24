@@ -17,7 +17,7 @@ export default (err: any, res: any): void => {
       return res.status(400).send(msg);
     }
     case NOT_FOUND: {
-      const msg = `Item was not found`;
+      const msg = `${err.reason} was not found`;
       console.log(msg);
       return res.status(404).send(msg);
     }

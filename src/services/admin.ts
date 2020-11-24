@@ -1,3 +1,5 @@
+import { Document } from 'mongoose';
+
 import {
   getQueue as dbGetQueue,
   addQueue as dbAddQueue,
@@ -11,23 +13,27 @@ import {
 } from '../models/agent';
 
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
-import { errorGeneralValidation, errorIdValidation } from '../utils/errorValidationService';
+import {
+  errorGeneralValidation,
+  errorIdValidation,
+  errorNotFound
+} from '../utils/errorValidationService';
 
 export default class Admin {
   // Getters
-  async getQueue(queueId: string): Promise<object> {
+  async getQueue(queueId: string): Promise<Pick<Document, "_id"> | null> {
     errorIdValidation(queueId, VALIDATION_ERROR);
 
     const queueData = await dbGetQueue(queueId);
-    if (!queueData) throw new Error(NOT_FOUND);
+    if (!queueData) errorNotFound('Queue', NOT_FOUND);
     return queueData;
   }
 
-  async getAgent(agentId: string): Promise<object> {
+  async getAgent(agentId: string): Promise<Pick<Document, "_id"> | null> {
     errorIdValidation(agentId, VALIDATION_ERROR);
 
     const agentData = await dbGetAgent(agentId);
-    if (!agentData) throw new Error(NOT_FOUND);
+    if (!agentData) errorNotFound('Agent', NOT_FOUND);
     return agentData;
   }
 
@@ -44,7 +50,7 @@ export default class Admin {
     errorIdValidation(queueId, VALIDATION_ERROR);
 
     const result = await dbRemoveQueue(queueId);
-    if (result === 0) throw new Error(NOT_FOUND);
+    if (result === 0) errorNotFound('Queue', NOT_FOUND);
     return true;
   }
 
@@ -61,7 +67,7 @@ export default class Admin {
     errorIdValidation(agentId, VALIDATION_ERROR);
 
     const result = await dbRemoveAgent(agentId);
-    if (result === 0) throw new Error(NOT_FOUND);
+    if (result === 0) errorNotFound('Agent', NOT_FOUND);
     return true;
   }
 
