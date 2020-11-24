@@ -4,7 +4,8 @@ import {
   getQueue as dbGetQueue,
   addQueue as dbAddQueue,
   removeQueue as dbRemoveQueue,
-  assignToQueue as dbAssignToQueue
+  assignToQueue as dbAssignToQueue,
+  unassignFromQueue as dbUnassignFromQueue
 } from '../models/queue';
 import {
   getAgent as dbGetAgent,
@@ -71,10 +72,18 @@ export default class Admin {
     return true;
   }
 
+  // Assign/Unassign agent to queue
   async assignToQueue(queueId: string, agentId: string): Promise<boolean> {
     await this.getQueue(queueId);
     await this.getAgent(agentId);
     await dbAssignToQueue(queueId, agentId);
+    return true;
+  }
+
+  async unassignFromQueue(queueId: string, agentId: string): Promise<boolean> {
+    await this.getQueue(queueId);
+    await this.getAgent(agentId);
+    await dbUnassignFromQueue(queueId, agentId);
     return true;
   }
 }

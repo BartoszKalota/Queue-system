@@ -85,15 +85,17 @@ adminRouter.post('/assignQueue', async (req, res): Promise<object | void> => {
   }
 });
 
-adminRouter.post('/unassignQueue', (req, res): object => {
+adminRouter.post('/unassignQueue', async (req, res): Promise<object | void> => {
   try {
+    if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
+    
+    await admin.unassignFromQueue(req.body.queueId, req.body.agentId);
+    console.log(`Agent with ID ${req.body.agentId} was unassigned from the queue with ID ${req.body.queueId} successfully!`);
     return res.json({
       ok: 'ok'
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
