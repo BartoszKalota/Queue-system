@@ -33,7 +33,7 @@ export const getQueue = async (queueId: string): Promise<Pick<Document, "_id"> |
     .exec();
 };
 
-export const getQueues = async (agentId: string): Promise<any> => {
+export const getQueues = async (agentId: string): Promise<Pick<Document, "_id"> | null> => {
   const query: quequeQuery = {};
 
   if (agentId) {

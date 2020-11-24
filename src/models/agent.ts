@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export const agentSchema = new mongoose.Schema({
   name: {
@@ -17,7 +17,7 @@ export const agentSchema = new mongoose.Schema({
 
 export const Agent = mongoose.model('Agent', agentSchema, 'agents');
 
-export const getAgent = async (agentId: string): Promise<any> => {
+export const getAgent = async (agentId: string): Promise<Pick<Document, "_id"> | null> => {
   return await Agent
     .findOne({
       _id: agentId
