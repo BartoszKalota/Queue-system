@@ -83,7 +83,10 @@ export default class Admin {
   async unassignFromQueue(queueId: string, agentId: string): Promise<boolean> {
     await this.getQueue(queueId);
     await this.getAgent(agentId);
-    await dbUnassignFromQueue(queueId, agentId);
+    
+    const result: any = await dbUnassignFromQueue(queueId, agentId);
+    if (result.nModified === 0) errorNotFound('Agent', NOT_FOUND);
+
     return true;
   }
 }

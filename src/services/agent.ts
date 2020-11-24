@@ -32,7 +32,9 @@ export default class Agent {
     await this.getQueue(queueId);
     errorIdValidation(userId, VALIDATION_ERROR);
 
-    await dbRemoveFromQueue(queueId, userId);
+    const result: any = await dbRemoveFromQueue(queueId, userId);
+    if (result.nModified === 0) errorNotFound('Client', NOT_FOUND);
+    
     return true;
   }
 }
