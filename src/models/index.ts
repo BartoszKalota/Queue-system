@@ -7,6 +7,7 @@ export const connectToMongoose: () => Promise<void> = async () => {
 
   await mongoose.connect(url, {
     useUnifiedTopology: true,
+    useFindAndModify: false,  // since method .findOneAndUpdate was marked as deprecated
     useNewUrlParser: true
   });
 };

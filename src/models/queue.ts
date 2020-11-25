@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-import { objFunct, strFunct, strTwoArgFunct } from '../../types/functions';
-import { quequeQuery } from '../../types/queries';
+import { quequeQuery, mapQueueDataInterface } from '../../types/interfaces';
 
 import { Agent } from './agent';
 
@@ -25,7 +24,7 @@ export const queueSchema = new mongoose.Schema({
 
 export const Queue = mongoose.model('Queue', queueSchema, 'queues');
 
-export const getQueue: strFunct = async (queueId) => {
+export const getQueue = async (queueId: string): Promise<Pick<Document, "_id"> | null> => {
   return await Queue
     .findOne({
       _id: queueId
@@ -34,7 +33,7 @@ export const getQueue: strFunct = async (queueId) => {
     .exec();
 };
 
-export const getQueues: strFunct = async (agentId) => {
+export const getQueues = async (agentId: string): Promise<Pick<Document, "_id">[]> => {
   const query: quequeQuery = {};
 
   if (agentId) {
@@ -44,18 +43,18 @@ export const getQueues: strFunct = async (agentId) => {
   }
 
   return await Queue
-    .findOne(query)
+    .find(query)
     .lean()
     .exec();
 };
 
-export const addQueue: objFunct = async (queueData) => {
-  const result = new Queue(queueData);
+export const addQueue = async (queueName: string): Promise<string> => {
+  const result = new Queue(queueName);
   await result.save();
   return result._id;
 };
 
-export const removeQueue: strFunct = async (queueId) => {
+export const removeQueue = async (queueId: string): Promise<number | undefined> => {
   const result = await Queue
     .deleteOne({
       _id: queueId
@@ -65,7 +64,7 @@ export const removeQueue: strFunct = async (queueId) => {
   return result.deletedCount;
 };
 
-export const assignToQueue: strTwoArgFunct = async (queueId, agentId) => {
+export const assignToQueue = async (queueId: string, agentId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId
@@ -77,7 +76,7 @@ export const assignToQueue: strTwoArgFunct = async (queueId, agentId) => {
     .exec();
 };
 
-export const unassignFromQueue: strTwoArgFunct = async (queueId, agentId) => {
+export const unassignFromQueue = async (queueId: string, agentId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId
@@ -89,7 +88,7 @@ export const unassignFromQueue: strTwoArgFunct = async (queueId, agentId) => {
     .exec();
 };
 
-export const addToQueue: strTwoArgFunct = async (queueId, userId) => {
+export const addToQueue = async (queueId: string, userId: string): Promise<mapQueueDataInterface> => {
   const newId = userId || new ObjectId();
 
   const queue: any = await Queue
@@ -108,7 +107,7 @@ export const addToQueue: strTwoArgFunct = async (queueId, userId) => {
   }
 };
 
-export const removeFromQueue: strTwoArgFunct = async (queueId, userId) => {
+export const removeFromQueue = async (queueId: string, userId: string): Promise<object> => {
   return await Queue
     .updateOne({
       _id: queueId
