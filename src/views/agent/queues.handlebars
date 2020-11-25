@@ -31,12 +31,14 @@
     <p><b>Left in queue:</b> {{ members.length }}</p>
     <div>
       <form action="agent/addClientToQueue" method="post">
+        <input type="hidden" name="queueId" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
         <input type="text" id="add-to-queue" />
         <button type="submit">Add client to queue</button>
       </form>
     </div>
     <div>
       <form action="agent/removeClientFromQueue" method="post">
+        <input type="hidden" name="queueId" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
         <input type="text" id="remove-from-queue" />
         <button type="submit">Remove client from queue</button>
       </form>
