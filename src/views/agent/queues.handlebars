@@ -14,7 +14,9 @@
   </tbody>
 </table>
 
-<button>Log out</button>
+<form name="logout" action="agent/logout" method="post">
+  <button type="submit">Log out</button>
+</form>
 
 <h2>Queues:</h2>
 
@@ -28,12 +30,20 @@
     <h3>{{ name }}</h3>
     <p><b>Left in queue:</b> {{ members.length }}</p>
     <div>
-      <input type="text" id="add-to-queue" />
-      <button>Add client to queue</button>
+      <form action="agent/addClientToQueue" method="post">
+        <input type="text" id="add-to-queue" />
+        <button type="submit">Add client to queue</button>
+      </form>
     </div>
     <div>
-      <input type="text" id="remove-from-queue" />
-      <button>Remove client from queue</button>
+      <form action="agent/removeClientFromQueue" method="post">
+        <input type="text" id="remove-from-queue" />
+        <button type="submit">Remove client from queue</button>
+      </form>
     </div>
   </div>
 {{/each}}
+
+{{#if queues.length}}
+  <script src="/agent.js" type="text/javascript"></script>
+{{/if}}
