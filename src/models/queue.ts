@@ -33,7 +33,7 @@ export const getQueue = async (queueId: string): Promise<Pick<Document, "_id"> |
     .exec();
 };
 
-export const getQueues = async (agentId: string): Promise<Pick<Document, "_id"> | null> => {
+export const getQueues = async (agentId: string): Promise<Pick<Document, "_id">[]> => {
   const query: quequeQuery = {};
 
   if (agentId) {
@@ -43,7 +43,7 @@ export const getQueues = async (agentId: string): Promise<Pick<Document, "_id"> 
   }
 
   return await Queue
-    .findOne(query)
+    .find(query)
     .lean()
     .exec();
 };

@@ -10,15 +10,16 @@ const clientRouter = Router();
 
 const client = new Client();
 
-clientRouter.get('/', (req, res): object => {
+clientRouter.get('/', async (req, res): Promise<object | void> => {
   try {
+    const queues = await client.getQueues();
+    console.log(`Available queues: \n${JSON.stringify(queues, undefined, 2)}`);
     return res.json({
-      message: 'Client view'
+      message: 'Client view',
+      queues
     });
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
-    });
+    errorResponse(err, res);
   }
 });
 
