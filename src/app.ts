@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import mongoose from 'mongoose';
 import exhbs from 'express-handlebars';
 import bodyParser from 'body-parser';
@@ -36,6 +37,10 @@ import api from './api';
 
     // Static dir
     app.use(express.static('public'));
+
+    // Session
+    // For simplification the safety issues were omitted
+    app.use(session({ secret: 'QUEUE_SESSION' }));
 
     // Connect to the database
     await connectToMongoose();
