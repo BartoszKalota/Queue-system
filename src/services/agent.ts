@@ -14,7 +14,7 @@ import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
 import { errorIdValidation, errorNotFound } from '../utils/errorValidationService';
 
 export default class Agent {
-  // Getters
+  // Internal getters
   async getQueue(queueId: string): Promise<Pick<Document, "_id"> | null> {
     errorIdValidation(queueId, VALIDATION_ERROR);
 

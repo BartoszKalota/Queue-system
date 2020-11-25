@@ -21,7 +21,7 @@ import {
 } from '../utils/errorValidationService';
 
 export default class Admin {
-  // Getters
+  // Internal getters
   async getQueue(queueId: string): Promise<Pick<Document, "_id"> | null> {
     errorIdValidation(queueId, VALIDATION_ERROR);
 
