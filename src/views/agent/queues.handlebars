@@ -1,0 +1,39 @@
+<h1>Queue management</h1>
+
+<h2>Agent details:</h2>
+<table>
+  <tbody>
+    <tr>
+      <td><b>Name:</b></td>
+      <td>{{ name }}</td>
+    </tr>
+    <tr>
+      <td><b>Position:</b></td>
+      <td>{{ position }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<button>Log out</button>
+
+<h2>Queues:</h2>
+
+{{#unless queues.length}}
+  <h3>No queues available for the agent.</h3>
+  <p>Ask the administrator to add you to the queue first.</p>
+{{/unless}}
+
+{{#each queues}}
+  <div style="display: inline-block; border: 1px solid black; padding: 24px;">
+    <h3>{{ name }}</h3>
+    <p><b>Left in queue:</b> {{ members.length }}</p>
+    <div>
+      <input type="text" id="add-to-queue" />
+      <button>Add client to queue</button>
+    </div>
+    <div>
+      <input type="text" id="remove-from-queue" />
+      <button>Remove client from queue</button>
+    </div>
+  </div>
+{{/each}}
