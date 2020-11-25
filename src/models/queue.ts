@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-import { quequeQuery } from '../../types/queries';
+import { quequeQuery, mapQueueDataInterface } from '../../types/interfaces';
 
 import { Agent } from './agent';
 
@@ -88,7 +88,7 @@ export const unassignFromQueue = async (queueId: string, agentId: string): Promi
     .exec();
 };
 
-export const addToQueue = async (queueId: string, userId: string): Promise<object> => {
+export const addToQueue = async (queueId: string, userId: string): Promise<mapQueueDataInterface> => {
   const newId = userId || new ObjectId();
 
   const queue: any = await Queue
