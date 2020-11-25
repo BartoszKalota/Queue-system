@@ -1,0 +1,38 @@
+<h1>Available queues:</h1>
+
+{{#unless queues.length}}
+  <h2>No queues available</h2>
+{{/unless}}
+
+{{#if queues.length}}
+  <table style="border: 1px double black;">
+    <tbody>
+      {{#each queues}}
+        <tr>
+          <td style="padding: 10px;">
+            <b>Name</b>
+          </td>
+          <td style="padding: 10px;">
+            {{ name }}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Current length</b>
+          </td>
+          <td style="padding: 10px;" id="queue-length-{{id}}">
+            {{ length }}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Choose queue</b>
+          </td>
+          <td style="padding: 10px; text-align: center;">
+            <button>Choose</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}
