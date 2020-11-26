@@ -47,14 +47,14 @@ agentRouter.post('/login', async (req: any, res): Promise<void> => {
   }
 });
 
-agentRouter.post('/logout', (req, res): object => {
+agentRouter.post('/logout', async (req, res): Promise<void> => {
   try {
-    return res.json({
-      ok: 'ok'
-    });
+    req.session.destroy(() => null); // Typescript enforced using argmument as a callback
+    return res.redirect('/agent');
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
+    return res.render('agent/fail', {
+      message: err.message,
+      reason: err.reason
     });
   }
 });
