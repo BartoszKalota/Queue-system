@@ -3,6 +3,7 @@ import express from 'express';
 import Agent from '../services/agent';
 
 import { MISSING_DATA } from '../constants/error';
+import errorResponse from '../utils/errorResponse';
 
 import { SessionExt } from '../../types/session';
 
@@ -26,6 +27,20 @@ agentRouter.get('/', async (req, res): Promise<void> => {
       message: err.message,
       reason: err.reason
     });
+  }
+});
+
+agentRouter.get('/agentData', async (req, res): Promise<object | void> => {
+  const { agentId }: SessionExt = req.session;
+  if (!agentId) {
+    return res.json({ agentData: {} });
+  }
+
+  try {
+    const agentData = await agent.getAgent(agentId);
+    return res.json({ agentData });
+  } catch (err) {
+    errorResponse(err, res);
   }
 });
 
