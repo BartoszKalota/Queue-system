@@ -33,7 +33,7 @@ export default class Agent {
     const queues = await dbGetQueues(agentId);
     return {
       ...agentData,
-      queues
+      queues: queues.map(queue => ({ ...queue, id: queue._id }))
     }
   }
 
