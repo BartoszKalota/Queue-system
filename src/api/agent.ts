@@ -31,14 +31,18 @@ agentRouter.get('/', async (req, res): Promise<void> => {
 });
 
 // Logging
-agentRouter.post('/login', (req, res): object => {
+agentRouter.post('/login', async (req: any, res): Promise<void> => {
   try {
-    return res.json({
-      ok: 'ok'
-    });
+    const agentId = req.body.id;
+    if (!agentId) throw new Error(MISSING_DATA);
+
+    await agent.getAgent(agentId);
+    req.session.agentId = agentId;
+    return res.redirect('/agent');
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
+    return res.render('agent/fail', {
+      message: err.message,
+      reason: err.reason
     });
   }
 });
