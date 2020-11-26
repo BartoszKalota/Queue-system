@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
@@ -33,14 +34,18 @@ import api from './api';
     app.set('view engine', 'handlebars');
 
     // Set views path
-    app.set('views', 'views');
+    app.set('views', path.join(path.resolve(), 'src', 'views'));
 
     // Static dir
     app.use(express.static('public'));
 
     // Session
     // For simplification the safety issues were omitted
-    app.use(session({ secret: 'QUEUE_SESSION' }));
+    app.use(session({
+      secret: 'QUEUE_SESSION',
+      resave: true,
+      saveUninitialized: true
+    }));
 
     // Connect to the database
     await connectToMongoose();
