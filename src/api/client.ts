@@ -20,6 +20,15 @@ clientRouter.get('/', async (req, res): Promise<object | void> => {
   }
 });
 
+clientRouter.get('/queues', async (req, res): Promise<object | void> => {
+  try {
+    const queues = await client.getQueues();
+    return res.json({ queues });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
 clientRouter.post('/addToQueue', async (req, res): Promise<object | void> => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
