@@ -5,20 +5,27 @@ import Agent from '../services/agent';
 import { MISSING_DATA } from '../constants/error';
 import errorResponse from '../utils/errorResponse';
 
+import { SessionExt } from '../../types/session';
+
 const { Router } = express;
 const agentRouter = Router();
 
 const agent = new Agent();
 
 // View
-agentRouter.get('/', (req, res): object => {
+agentRouter.get('/', async (req, res): Promise<void> => {
+  const { agentId }: SessionExt = req.session;
+  
   try {
-    return res.json({
-      message: 'This will show agents view'
-    });
+    if (agentId) {
+      const agentData = await agent.getAgent(agentId);
+      return res.render('agent/queues', agentData);
+    }
+    return res.render('agent/login');
   } catch (err) {
-    return res.status(500).json({
-      err: err.message
+    return res.render('agent/fail', {
+      message: err.message,
+      reason: err.reason
     });
   }
 });
