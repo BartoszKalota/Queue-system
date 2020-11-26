@@ -3,7 +3,6 @@ import express from 'express';
 import Agent from '../services/agent';
 
 import { MISSING_DATA } from '../constants/error';
-import errorResponse from '../utils/errorResponse';
 
 import { SessionExt } from '../../types/session';
 
@@ -66,11 +65,12 @@ agentRouter.post('/addClientToQueue', async (req, res): Promise<object | void> =
 
     await agent.addToQueue(req.body.queueId, req.body.userId);
     console.log(`Client with ID ${req.body.userId} was assigned to the queue with ID ${req.body.queueId} successfully!`);
-    return res.json({
-      ok: 'ok'
-    });
+    return res.render('agent/success');
   } catch (err) {
-    errorResponse(err, res);
+    return res.render('agent/fail', {
+      message: err.message,
+      reason: err.reason
+    });
   }
 });
 
@@ -80,11 +80,12 @@ agentRouter.post('/removeClientFromQueue', async (req, res): Promise<object | vo
 
     await agent.removeFromQueue(req.body.queueId, req.body.userId);
     console.log(`Client with ID ${req.body.userId} was unassigned from the queue with ID ${req.body.queueId} successfully!`);
-    return res.json({
-      ok: 'ok'
-    });
+    return res.render('agent/success');
   } catch (err) {
-    errorResponse(err, res);
+    return res.render('agent/fail', {
+      message: err.message,
+      reason: err.reason
+    });
   }
 });
 
