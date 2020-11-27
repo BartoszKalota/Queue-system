@@ -10,10 +10,10 @@ const clientRouter = Router();
 
 const client = new Client();
 
+// Main view
 clientRouter.get('/', async (req, res): Promise<object | void> => {
   try {
     const queues = await client.getQueues();
-    console.log(`Available queues: \n${JSON.stringify(queues, undefined, 2)}`);
     return res.render('client/queues', { queues });
   } catch (err) {
     errorResponse(err, res);
@@ -30,6 +30,7 @@ clientRouter.get('/queues', async (req, res): Promise<object | void> => {
   }
 });
 
+// Add client to queue
 clientRouter.post('/addToQueue', async (req, res): Promise<object | void> => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
