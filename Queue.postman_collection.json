@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "9e61223f-a216-4acf-8679-ae074311f856",
-		"name": "Queue",
+		"_postman_id": "cff3137f-fe01-4e88-9632-88a8b56ee9be",
+		"name": "Queue system (workshop)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -28,6 +28,40 @@
 					"path": [
 						"admin",
 						"queue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete queue",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"John Kowalsky\",\n\t\"position\": \"Senior officer\",\n\t\"active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/admin/queue?id=5fbc454947f4b6705fbb3da1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"queue"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5fbc454947f4b6705fbb3da1"
+						}
 					]
 				}
 			},
@@ -76,7 +110,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/admin/agent?id=5eb8a9d0679190936da6db05",
+					"raw": "localhost:3000/admin/agent?id=5fbc454947f4b6705fbb3da1",
 					"host": [
 						"localhost"
 					],
@@ -88,7 +122,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "5eb8a9d0679190936da6db05"
+							"value": "5fbc454947f4b6705fbb3da1"
 						}
 					]
 				}
@@ -102,7 +136,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"agentId\": \"5eb8a9cd679190936da6db03\",\n\t\"queueId\": \"5eb8a82b808053746d516683\"\n}",
+					"raw": "{\n\t\"queueId\": \"5fc019ea25f2ec0bbeb8319d\",\n\t\"agentId\": \"5fc0263e5e750f14edd41dfe\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -126,11 +160,11 @@
 		{
 			"name": "UnassignQueue",
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": \"5eb8a82b808053746d516683\"\n}",
+					"raw": "{\n\t\"queueId\": \"5fc019ea25f2ec0bbeb8319d\",\n\t\"agentId\": \"5fc0263e5e750f14edd41dfe\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -138,14 +172,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/client/addToQueue",
+					"raw": "localhost:3000/admin/unassignQueue",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"client",
-						"addToQueue"
+						"admin",
+						"unassignQueue"
 					]
 				}
 			},
@@ -158,7 +192,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"queueId\": \"5eb8a82b808053746d516683\",\n\t\"clientId\": \"123123123123123123123123\"\n}",
+					"raw": "{\n\t\"queueId\": \"5fbc2d64aad5ea5c840cb5eb\",\n\t\"userId\": \"123123123123123123123123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -186,7 +220,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"queueId\": \"5eb8a82b808053746d516683\",\n\t\"clientId\": \"123123123123123123123123\"\n}",
+					"raw": "{\n\t\"queueId\": \"5fbc2d64aad5ea5c840cb5eb\",\n\t\"userId\": \"123123123123123123123123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -208,13 +242,44 @@
 			"response": []
 		},
 		{
+			"name": "Get queues (agent)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/agent/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agent",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add To Queue (client)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": \"5eb8a82b808053746d516683\"\n}",
+					"raw": "{\n\t\"id\": \"5fbd33c6560cdd48bbee3e4e\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -230,6 +295,37 @@
 					"path": [
 						"client",
 						"addToQueue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get queues (client)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/client/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"client",
+						""
 					]
 				}
 			},
