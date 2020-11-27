@@ -30,6 +30,7 @@ agentRouter.get('/', async (req, res): Promise<void> => {
   }
 });
 
+// Requested by axios from client JS code (src/client)
 agentRouter.get('/agentData', async (req, res): Promise<object | void> => {
   const { agentId }: SessionExt = req.session;
   if (!agentId) {

@@ -20,6 +20,7 @@ clientRouter.get('/', async (req, res): Promise<object | void> => {
   }
 });
 
+// Requested by axios from client JS code (src/client)
 clientRouter.get('/queues', async (req, res): Promise<object | void> => {
   try {
     const queues = await client.getQueues();

@@ -33,16 +33,16 @@
       <span id="queue-length-{{id}}">{{ members.length }}</span>
     </p>
     <div>
-      <form action="agent/addClientToQueue" method="post">
+      <form name="addClient" action="agent/addClientToQueue" method="post">
         <input type="hidden" name="queueId" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
-        <input type="text" id="add-to-queue" />
+        <input type="text" name="userId" id="add-to-queue" />
         <button type="submit">Add client to queue</button>
       </form>
     </div>
     <div>
-      <form action="agent/removeClientFromQueue" method="post">
+      <form name="removeClient" action="agent/removeClientFromQueue" method="post">
         <input type="hidden" name="queueId" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
-        <input type="text" id="remove-from-queue" />
+        <input type="text" name="userId" id="remove-from-queue" />
         <button type="submit">Remove client from queue</button>
       </form>
     </div>
