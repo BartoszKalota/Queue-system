@@ -9,3 +9,12 @@ export interface mapQueueDataInterface {
   name: string;
   __v: number
 };
+
+export interface getAgentData {
+  _id: string;
+  name: string;
+  active: boolean;
+  position: string;
+  __v: number;
+  queues: Array<object>;
+}

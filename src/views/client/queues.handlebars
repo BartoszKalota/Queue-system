@@ -5,7 +5,7 @@
 {{/unless}}
 
 {{#each queues}}
-  <form action="/client/addToQueue" method="post" style="margin: 10px;">
+  <form name="addToQueue" action="/client/addToQueue" method="post" style="margin: 10px;">
     <table style="border: 1px double black; width: 300px;">
       <tbody>
         <tr>
@@ -29,7 +29,7 @@
             <b>Choose queue</b>
           </td>
           <td style="padding: 10px; text-align: center;">
-            <input type="hidden" id="queueId" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
+            <input type="hidden" id="queueId" name="id" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
             <button type="submit">Choose</button>
           </td>
         </tr>
