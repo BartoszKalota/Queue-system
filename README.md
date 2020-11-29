@@ -3,26 +3,15 @@ A server app (back-end app) for queues management in *e.g.* an office or a depar
 
 # Roles
 ## User
-  * User is a client and uses SSR views as an interface (see the 'SSR views').
-  * This interface shows all available queues (1 queue = 1 official issue or field).
-  * **User can enroll in selected queue.**
-  * When enrolled the user receives:
-    * the ID
-    * the number of people in the queue before him.
+  * User is a client.
+  * Can enroll in selected queue.
 ## Agent
-  * Agent is a official and uses SSR views as an interface (see the 'SSR views').
-  * Logs in with ID and without a password for simplification (see the 'Simplifications' section).
-  * When logged in, his interface shows the main board including:
-    * agent basic information (visible only for the logged agent)
-    * queues assigned to this agent (an admin assignes queues to agents)
-    * the number of users in each queue.
-  * **Agent can add / remove a user to / from a queue.** Each queue has mini-form to add / remove a user by ID to / from the queue.
-  * Logs out ending the session.
+  * Agent is a official.
+  * Logs in and out.
+  * When logged in, the agent can add / remove a user to / from a queue.
 ## Admin
-  * Admin has no views as an interface but is available *via* API endpoints (see the 'SSR views' section).
-  * **Adds / removes queues and agents.**
-  * **Assignes / Unassignes agents to / from queues.**
-  * More than one agent can be assigned to the same queue.
+  * Adds / removes queues and agents.
+  * Assignes / Unassignes agents to / from queues (more than one agent can be assigned to the same queue).
 
 # Simplifications
 * Simplifications were implemented according to the workshop guideliness.
@@ -31,31 +20,45 @@ A server app (back-end app) for queues management in *e.g.* an office or a depar
 ```javascript
 app.use(session({ secret: 'QUEUE_SESSION' }));
 ```
-* SSR views code is strongly limited (see the 'SSR views' section).
-* Admin has no views as an interface (see the 'SSR views' section).
+* SSR views code is significantly limited (see the 'SSR views' section).
+* Admin has no views as an interface (see the 'Admin views' section).
 
 # SSR views
-* odpalenie adresu i obsługa z widoku
-* widoki provide dane do request body na potrzeby interakcji z endpointami
-
 * Views content and its styling is limited to a minimum (according to the workshop guideliness).
-* They include scripts that request API periodically for queues state and update this state (does not handle dynamic data addition or deletion).
+* They provide necessary data for request bodies to interact with endpoints.
+* Views include JS code requesting API periodically for queues state and update this state (does not handle dynamic data addition or deletion).
 ## User views
 * For the user, there are views for:
-  * available queues to enroll
+  * a main board showing all available queues to enroll (1 queue = 1 official issue or field)
   * successful addition to a queue
   * failed addition to a queue.
+* When enrolled, the user receives:
+  * the ID
+  * the number of people in the queue before the user.
 ## Agent views
 * For the agent, there are views for:
   * a form to log in
-  * main board - queues assigned to the logged in agent and his basic information
+  * a main board showing:
+    * agent basic information (visible only for the logged in agent)
+    * all queues assigned to this agent
+    * the number of users in each queue
   * successful operation of addition or deletion of a user
   * failed operation of addition or deletion of a user.
+* When logged in:
+  * the agent sees the main board
+  * each queue has an input to add / remove a user by ID to / from the queue.
 ## Admin views
-* For the admin, there are no views. You can interact with admin API endpoints with `Postman` app (see the 'Endpoints' section).
+* There are no views for the admin.
+* Admin interface is available *via* API endpoints (see the 'Endpoints' section).
 
 # Endpoints
-* User and agent endpoints are handled with their views that provide all necessary data for request bodies. To review these data open the Postman requests collection file (see the 'Information' section).
+* **User** and **agent** endpoints are handled with SSR views that provide all necessary data for request bodies. Therefore, to use the app as a user or an agent:
+  * utilize a browser
+  * see the 'User endpoints' or 'Agent endpoints' sections, respectively.
+* **Admin** endpoints have no SSR views and need a 3rd party app for an interaction. Therefore, to use the app as an admin:
+  * utilize the `Postman` app
+  * import Postman requests collection file to the `Postman` app (see the 'Information' section)
+  * see the 'Admin endpoints' section.
 ## User endpoints
 * Default route: http://localhost:3000/client
 * **GET**
@@ -65,26 +68,46 @@ app.use(session({ secret: 'QUEUE_SESSION' }));
 ## Agent endpoints
 * Default route: http://localhost:3000/agent
 * **GET**
-  * **/** - render the login view or the main board depending on existing session
+  * **/** - render the login view or the main board depending on the session
 * **POST**
   * **/login** - send submitted credentials to log in
   * **/logout** - terminate the session
-  * **/addClientToQueue** - add a user to a queue
-  * **/removeClientFromQueue** - remove a user from a queue
+  * **/addClientToQueue** - add a user to a queue (by user ID)
+  * **/removeClientFromQueue** - remove a user from a queue (by user ID)
 ## Admin endpoints
 * Default route: http://localhost:3000/admin
 * **PUT**
   * **/queue** - create a new queue
+  * **/agent** - create a new agent
 * **DELETE**
-  * **/queue** - remove a queue
+  * **/queue?id** - remove a queue
+  * **/agent?id** - remove an agent
+* **POST**
+  * **/assignQueue** - assign an agent to a queue
+  * **/unassignQueue** - unassign an agent from a queue
 
-(requests collection available, see the 'Information' section).
-* The project includes Postman requests collection useful for interaction with API endpoints (see the 'Information' section).
+# MongoDB
+* Database address:
+  * `mongodb://localhost:27017/queue`
+* Database name:
+  * `queue`
+* Collections names:
+  * `agents`
+  * `queues`
+## Mongoose models
+* In each model, all listed fields are required (unless otherwise stated).
+### Agents model
+* **name** - `String`
+* **position** - `String`
+* **active** - `Boolean`
+### Queues model
+* **name** - `String`
+* **members** - `[mongoose.Types.ObjectId]` - users added to a queue
+* **agents** - `[mongoose.Types.ObjectId]` - agents assigned to a queue, **not required**
 
 # Information
-* **Postman requests collection** useful for interaction with API endpoints (for users, agents and admin) is available as a file named `Queue.postman_collection.json`. You can import it to your `Postman` app.
-
-zbiór console.logów
+* **Postman requests collection** useful for interaction with API endpoints (for users, agents and especially admin) is available as a file named `Queue.postman_collection.json`. You can import it to your `Postman` app.
+* Server app console prints every API request.
 
 # Technologies
 - TypeScript
@@ -106,15 +129,16 @@ npm i
 to install necessary dependencies.
 * Install and configure [MongoDB](https://docs.mongodb.com/manual/administration/install-community/) to get this database on your machine.
 * Install and launch:
-    * [Postman](https://www.postman.com/downloads/) app to interact with admin API endpoints.
+    * [Postman](https://www.postman.com/downloads/) app to interact with admin endpoints.
     * [Robo 3T](https://robomongo.org/download) app (without Studio 3T) to interact with MongoDB.
+* Run:
+```
+npm run client
+```
+to generate JS code for SSR views.
 * Next, run:
 ```
 npm run start
 ```
 to start the app.
-## Utilization
-* To use the app as a **user** or an **agent**:
-    * open http://localhost:3000 to view it in the browser.
-
-npm run client - potrzebne do wytworzenia kodu klienckiego
+* Now, you can interact with the server app with a browser and/or the Postman (see the 'Endpoints' section) and monitor database changes with Robo 3T.
