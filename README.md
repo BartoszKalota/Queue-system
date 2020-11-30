@@ -1,6 +1,8 @@
 # Queue system (Workshop-5, Node.js)
 A server app (back-end app) for queues management in *e.g.* an office or a department like a city hall. It provides interfaces as server-side rendering (SSR) views for users and agents and API endpoints for an admin. The project is the part of the Coders Lab course.
 
+![Project_screen](./images/project_screen.png)
+
 # Roles
 ## User
   * User is a client.
@@ -60,13 +62,13 @@ app.use(session({ secret: 'QUEUE_SESSION' }));
   * import Postman requests collection file to the `Postman` app (see the 'Information' section)
   * see the 'Admin endpoints' section.
 ## User endpoints
-* Default route: http://localhost:3000/client
+* http://localhost:3000/client
 * **GET**
   * **/** - render the main view with all available queues
 * **POST**
   * **/addToQueue** - add a user to a queue
 ## Agent endpoints
-* Default route: http://localhost:3000/agent
+* http://localhost:3000/agent
 * **GET**
   * **/** - render the login view or the main board depending on the session
 * **POST**
@@ -75,7 +77,7 @@ app.use(session({ secret: 'QUEUE_SESSION' }));
   * **/addClientToQueue** - add a user to a queue (by user ID)
   * **/removeClientFromQueue** - remove a user from a queue (by user ID)
 ## Admin endpoints
-* Default route: http://localhost:3000/admin
+* http://localhost:3000/admin
 * **PUT**
   * **/queue** - create a new queue
   * **/agent** - create a new agent
@@ -106,8 +108,8 @@ app.use(session({ secret: 'QUEUE_SESSION' }));
 * **agents** - `[mongoose.Types.ObjectId]` - agents assigned to a queue, **not required**
 
 # Information
-* **Postman requests collection** useful for interaction with API endpoints (for users, agents and especially admin) is available as a file named `Queue.postman_collection.json`. You can import it to your `Postman` app.
-* Server app console prints every API request.
+* **Postman requests collection file** named `Queue.postman_collection.json` useful for interaction with API endpoints (for users, agents and especially admin) is available in the project. You can import it to your `Postman` app.
+* Server app console prints every request to API endpoints.
 
 # Technologies
 - TypeScript
@@ -141,4 +143,4 @@ to generate JS code for SSR views.
 npm run start
 ```
 to start the app.
-* Now, you can interact with the server app with a browser and/or the Postman (see the 'Endpoints' section) and monitor database changes with Robo 3T.
+* Now, you can interact with the server app with a browser and/or the `Postman` (see the 'Endpoints' section) and monitor database changes with `Robo 3T`.
