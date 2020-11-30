@@ -1,4 +1,7 @@
+import path from 'path';
 import express from 'express';
+import session from 'express-session';
+import mongoose from 'mongoose';
 import exhbs from 'express-handlebars';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -8,7 +11,7 @@ import { APP_PORT } from './config/app';
 import { connectToMongoose } from './models';
 import api from './api';
 
-(async function runApp() {
+(async () => {
   try {
     const app = express();
 
@@ -31,10 +34,18 @@ import api from './api';
     app.set('view engine', 'handlebars');
 
     // Set views path
-    app.set('views', 'views');
+    app.set('views', path.join(path.resolve(), 'src', 'views'));
 
     // Static dir
     app.use(express.static('public'));
+
+    // Session
+    // For simplification the safety issues were omitted
+    app.use(session({
+      secret: 'QUEUE_SESSION',
+      resave: true,
+      saveUninitialized: true
+    }));
 
     // Connect to the database
     await connectToMongoose();
@@ -42,9 +53,22 @@ import api from './api';
     // Add routing
     app.use(api);
 
-    const server = app.listen(APP_PORT, () => {
-      console.log(`Listening on port ${server.address().port}`);
+    app.listen(APP_PORT, () => {
+      console.log(`Listening on port ${APP_PORT}`);
     });
+
+    // Server termination
+    process
+      .on('SIGINT', async (err) => {
+        await mongoose.disconnect();
+        if (err) console.log('Sigint: ', err);
+        process.exit(0);
+      })
+      .on('uncaughtException', async (err) => {
+        await mongoose.disconnect();
+        console.log('Uncaught exception: ', err);
+        process.exit(1);
+      });
   } catch (err) {
     console.log('Problems initializing the app', err);
   }

@@ -1,0 +1,41 @@
+<h1>Available queues:</h1>
+
+{{#unless queues.length}}
+  <h2>No queues available</h2>
+{{/unless}}
+
+{{#each queues}}
+  <form name="addToQueue" action="/client/addToQueue" method="post" style="margin: 10px;">
+    <table style="border: 1px double black; width: 300px;">
+      <tbody>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Name</b>
+          </td>
+          <td style="padding: 10px;">
+            {{ name }}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Current length</b>
+          </td>
+          <td style="padding: 10px;" id="queue-length-{{id}}">
+            {{ length }}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Choose queue</b>
+          </td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="hidden" id="queueId" name="id" value="{{id}}" /> {{!-- to transfer queueId invisible for the client --}}
+            <button type="submit">Choose</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+{{/each}}
+
+<script src="/client.js" type="text/javascript"></script>
