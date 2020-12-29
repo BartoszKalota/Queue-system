@@ -3,6 +3,9 @@ A server app (back-end app) for queues management in *e.g.* an office or a depar
 
 ![Project_screen](./images/project_screen.png)
 
+# Video demo
+[![Watch the video](./images/video-demo.jpg)](https://youtu.be/ZftADlZRVQY)
+
 # Roles
 ## User
   * User is a client.
