@@ -1,10 +1,15 @@
+import { Response } from 'express';
+
 import {
   MISSING_DATA,
   NOT_FOUND,
   VALIDATION_ERROR
 } from '../constants/error';
 
-export default (err: any, res: any): void => {
+import { ErrorExt } from '../interfaces/ErrorExt';
+
+
+export default (err: ErrorExt, res: Response) => {
   switch (err.message) {
     case MISSING_DATA: {
       const msg = 'Missing input data';

@@ -1,5 +1,8 @@
 import mongoose, { Document } from 'mongoose';
 
+import { AgentI } from '../interfaces/AgentI';
+
+
 export const agentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,13 +29,13 @@ export const getAgent = async (agentId: string): Promise<Pick<Document, "_id"> |
     .exec();
 };
 
-export const addAgent = async (agentData: object): Promise<string> => {
+export const addAgent = async (agentData: AgentI): Promise<string> => {
   const result = new Agent(agentData);
   await result.save();
   return result._id;
 };
 
-export const removeAgent = async (agentId: string): Promise<number | undefined> => {
+export const removeAgent = async (agentId: string): Promise<number> => {
   const result = await Agent
     .deleteOne({
       _id: agentId

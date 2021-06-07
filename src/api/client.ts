@@ -5,33 +5,39 @@ import Client from '../services/client';
 import { MISSING_DATA } from '../constants/error';
 import errorResponse from '../utils/errorResponse';
 
+import { ClientRequestI, CustomRequest } from '../interfaces/CustomRequest';
+import { ErrorExt } from '../interfaces/ErrorExt';
+
+
 const { Router } = express;
 const clientRouter = Router();
 
 const client = new Client();
 
 // Main view
-clientRouter.get('/', async (req, res): Promise<object | void> => {
+clientRouter.get('/', async (_, res) => {
   try {
     const queues = await client.getQueues();
     return res.render('client/queues', { queues });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Requested by axios from client JS code (src/client)
-clientRouter.get('/queues', async (req, res): Promise<object | void> => {
+clientRouter.get('/queues', async (_, res) => {
   try {
     const queues = await client.getQueues();
     return res.json({ queues });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Add client to queue
-clientRouter.post('/addToQueue', async (req, res): Promise<object | void> => {
+clientRouter.post('/addToQueue', async (req: CustomRequest<ClientRequestI>, res) => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
     
@@ -45,9 +51,10 @@ clientRouter.post('/addToQueue', async (req, res): Promise<object | void> => {
       size: queue.length - 1
     });
   } catch (err) {
+    const errCopy = err as ErrorExt;
     return res.render('client/fail', {
-      message: err.message,
-      reason: err.reason
+      message: errCopy.message,
+      reason: errCopy.reason
     });
   }
 });

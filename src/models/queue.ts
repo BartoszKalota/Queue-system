@@ -1,9 +1,11 @@
 import mongoose, { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-import { quequeQuery, mapQueueDataInterface } from '../../types/interfaces';
-
 import { Agent } from './agent';
+
+import { GetQueueDataI } from '../interfaces/GetQueueDataI';
+import { QueueI } from '../interfaces/QueueI';
+
 
 export const queueSchema = new mongoose.Schema({
   name: {
@@ -34,7 +36,7 @@ export const getQueue = async (queueId: string): Promise<Pick<Document, "_id"> |
 };
 
 export const getQueues = async (agentId: string): Promise<Pick<Document, "_id">[]> => {
-  const query: quequeQuery = {};
+  const query: { agents?: { $in: string[]; }} = {};
 
   if (agentId) {
     query.agents = {
@@ -54,7 +56,7 @@ export const addQueue = async (queueName: string): Promise<string> => {
   return result._id;
 };
 
-export const removeQueue = async (queueId: string): Promise<number | undefined> => {
+export const removeQueue = async (queueId: string): Promise<number> => {
   const result = await Queue
     .deleteOne({
       _id: queueId
@@ -64,7 +66,7 @@ export const removeQueue = async (queueId: string): Promise<number | undefined> 
   return result.deletedCount;
 };
 
-export const assignToQueue = async (queueId: string, agentId: string): Promise<object> => {
+export const assignToQueue = async (queueId: string, agentId: string): Promise<QueueI> => {
   return await Queue
     .updateOne({
       _id: queueId
@@ -76,7 +78,7 @@ export const assignToQueue = async (queueId: string, agentId: string): Promise<o
     .exec();
 };
 
-export const unassignFromQueue = async (queueId: string, agentId: string): Promise<object> => {
+export const unassignFromQueue = async (queueId: string, agentId: string): Promise<QueueI> => {
   return await Queue
     .updateOne({
       _id: queueId
@@ -88,10 +90,10 @@ export const unassignFromQueue = async (queueId: string, agentId: string): Promi
     .exec();
 };
 
-export const addToQueue = async (queueId: string, userId: string): Promise<mapQueueDataInterface> => {
+export const addToQueue = async (queueId: string, userId: string): Promise<GetQueueDataI> => {
   const newId = userId || new ObjectId();
 
-  const queue: any = await Queue
+  const queue = await Queue
     .findOneAndUpdate({
       _id: queueId
     }, {
@@ -107,7 +109,7 @@ export const addToQueue = async (queueId: string, userId: string): Promise<mapQu
   }
 };
 
-export const removeFromQueue = async (queueId: string, userId: string): Promise<object> => {
+export const removeFromQueue = async (queueId: string, userId: string): Promise<QueueI> => {
   return await Queue
     .updateOne({
       _id: queueId

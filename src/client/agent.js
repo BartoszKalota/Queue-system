@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 setInterval(async () => {
   const { data: { agentData }} = await axios.get('/agent/agentData');
   const queues = agentData && agentData.queues;

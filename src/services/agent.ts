@@ -13,6 +13,11 @@ import {
 import { VALIDATION_ERROR, NOT_FOUND } from '../constants/error';
 import { errorIdValidation, errorNotFound } from '../utils/errorValidationService';
 
+import { AgentI } from '../interfaces/AgentI';
+import { QueueI } from '../interfaces/QueueI';
+import { GetAgentDataI } from '../interfaces/GetAgentDataI';
+
+
 export default class Agent {
   // Internal getters
   async getQueue(queueId: string): Promise<Pick<Document, "_id"> | null> {
@@ -24,13 +29,13 @@ export default class Agent {
   }
 
   // Agent and its queues
-  async getAgent(agentId: string): Promise<object> {
+  async getAgent(agentId: string): Promise<GetAgentDataI> {
     errorIdValidation(agentId, VALIDATION_ERROR);
 
-    const agentData = await dbGetAgent(agentId);
+    const agentData = await dbGetAgent(agentId) as AgentI;
     if (!agentData) errorNotFound('Agent', NOT_FOUND);
 
-    const queues = await dbGetQueues(agentId);
+    const queues = await dbGetQueues(agentId) as QueueI[];
     return {
       ...agentData,
       queues: queues.map(queue => ({ ...queue, id: queue._id }))
@@ -50,7 +55,7 @@ export default class Agent {
     await this.getQueue(queueId);
     errorIdValidation(userId, VALIDATION_ERROR);
 
-    const result: any = await dbRemoveFromQueue(queueId, userId);
+    const result = await dbRemoveFromQueue(queueId, userId);
     if (result.nModified === 0) errorNotFound('Client', NOT_FOUND);
     
     return true;

@@ -5,13 +5,16 @@ import Admin from '../services/admin';
 import { MISSING_DATA } from '../constants/error';
 import errorResponse from '../utils/errorResponse';
 
+import { ErrorExt } from '../interfaces/ErrorExt';
+
+
 const { Router } = express;
 const adminRouter = Router();
 
 const admin = new Admin();
 
 // Create queue
-adminRouter.put('/queue', async (req, res): Promise<object | void> => {
+adminRouter.put('/queue', async (req, res) => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
     
@@ -21,12 +24,13 @@ adminRouter.put('/queue', async (req, res): Promise<object | void> => {
       id
     });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Delete queue
-adminRouter.delete('/queue', async (req, res): Promise<object | void> => {
+adminRouter.delete('/queue', async (req, res) => {
   try {
     const id = req.query.id;
     if (!id) throw new Error(MISSING_DATA);
@@ -37,12 +41,13 @@ adminRouter.delete('/queue', async (req, res): Promise<object | void> => {
       ok: 'ok'
     })
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Create agent
-adminRouter.put('/agent', async (req, res): Promise<object | void> => {
+adminRouter.put('/agent', async (req, res) => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
     
@@ -52,12 +57,13 @@ adminRouter.put('/agent', async (req, res): Promise<object | void> => {
       id
     });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Delete agent
-adminRouter.delete('/agent', async (req, res): Promise<object | void> => {
+adminRouter.delete('/agent', async (req, res) => {
   try {
     const id = req.query.id;
     if (!id) throw new Error(MISSING_DATA);
@@ -68,12 +74,13 @@ adminRouter.delete('/agent', async (req, res): Promise<object | void> => {
       ok: 'ok'
     });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Assign agent to queue
-adminRouter.post('/assignQueue', async (req, res): Promise<object | void> => {
+adminRouter.post('/assignQueue', async (req, res) => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
 
@@ -83,12 +90,13 @@ adminRouter.post('/assignQueue', async (req, res): Promise<object | void> => {
       ok: 'ok'
     });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 
 // Unassign agent from queue
-adminRouter.post('/unassignQueue', async (req, res): Promise<object | void> => {
+adminRouter.post('/unassignQueue', async (req, res) => {
   try {
     if (!Object.keys(req.body).length) throw new Error(MISSING_DATA);
     
@@ -98,7 +106,8 @@ adminRouter.post('/unassignQueue', async (req, res): Promise<object | void> => {
       ok: 'ok'
     });
   } catch (err) {
-    errorResponse(err, res);
+    const errCopy = err as ErrorExt;
+    errorResponse(errCopy, res);
   }
 });
 

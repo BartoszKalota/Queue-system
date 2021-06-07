@@ -11,6 +11,7 @@ import { APP_PORT } from './config/app';
 import { connectToMongoose } from './models';
 import api from './api';
 
+
 (async () => {
   try {
     const app = express();

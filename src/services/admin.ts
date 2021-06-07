@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Error } from 'mongoose';
 
 import {
   getQueue as dbGetQueue,
@@ -19,6 +19,9 @@ import {
   errorIdValidation,
   errorNotFound
 } from '../utils/errorValidationService';
+
+import { AgentI } from '../interfaces/AgentI';
+
 
 export default class Admin {
   // Internal getters
@@ -43,7 +46,8 @@ export default class Admin {
     try {
       return await dbAddQueue(queueName);
     } catch (err) {
-      errorGeneralValidation(err, VALIDATION_ERROR);
+      const errCopy = err as Error;
+      errorGeneralValidation(errCopy, VALIDATION_ERROR);
     }
   }
 
@@ -56,11 +60,12 @@ export default class Admin {
   }
 
   // Agent
-  async addAgent(agentData: object): Promise<string | void> {
+  async addAgent(agentData: AgentI): Promise<string | void> {
     try {
       return await dbAddAgent(agentData);
     } catch (err) {
-      errorGeneralValidation(err, VALIDATION_ERROR);
+      const errCopy = err as Error;
+      errorGeneralValidation(errCopy, VALIDATION_ERROR);
     }
   }
 
@@ -84,7 +89,7 @@ export default class Admin {
     await this.getQueue(queueId);
     await this.getAgent(agentId);
     
-    const result: any = await dbUnassignFromQueue(queueId, agentId);
+    const result = await dbUnassignFromQueue(queueId, agentId);
     if (result.nModified === 0) errorNotFound('Agent', NOT_FOUND);
 
     return true;

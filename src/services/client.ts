@@ -6,11 +6,15 @@ import {
 import { VALIDATION_ERROR } from '../constants/error';
 import { errorIdValidation } from '../utils/errorValidationService';
 
-import { mapQueueDataInterface } from '../../types/interfaces';
+import { MapQueueDataI } from '../interfaces/MapQueueDataI';
+import { GetQueueDataI } from '../interfaces/GetQueueDataI';
+import { ClientInQueueI } from '../interfaces/ClientInQueueI';
+import { QueueI } from '../interfaces/QueueI';
+
 
 export default class Client {
   // Internal filter
-  mapQueueData({ members, _id, name }: mapQueueDataInterface) {
+  mapQueueData({ members, _id, name }: GetQueueDataI): MapQueueDataI {
     return {
       name,
       id: _id,
@@ -18,12 +22,12 @@ export default class Client {
     };
   };
 
-  async getQueues(): Promise<any> {
-    const queues: any = await dbGetQueues('');
-    return queues.map((queue: any) => this.mapQueueData(queue));
+  async getQueues(): Promise<MapQueueDataI[]> {
+    const queues = await dbGetQueues('') as QueueI[];
+    return queues.map((queue: QueueI): MapQueueDataI => this.mapQueueData(queue));
   }
 
-  async addToQueue(queueId: string): Promise<any> {
+  async addToQueue(queueId: string): Promise<ClientInQueueI> {
     errorIdValidation(queueId, VALIDATION_ERROR);
 
     const queueData = await dbAddToQueue(queueId, '');
